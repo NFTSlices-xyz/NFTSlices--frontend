@@ -8,6 +8,7 @@ export const Header = ({ action }: { action?: ReactNode }) => {
           <span className="text-xl">NFTSlices</span>
           <span className="flex-col-center ml-3 py-.25 px-1.5 text-xs text-#666 bg-white rounded-full font-light"></span>
         </div>
+        <div className="flex items-center gap-2">{action}</div>
       </div>
     </div>
   )
