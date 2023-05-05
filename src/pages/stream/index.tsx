@@ -66,8 +66,8 @@ const Home = () => {
           }
         ></p>
 
-        <div className="mt-5 max-w-6xl m-auto px-4 flex gap-8 flex-wrap justify-center items-center">
-          <div onClick={() => {}} className="w-[300px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto">
+        <div className="mt-0 max-w-6xl m-auto px-4 flex gap-8 flex-wrap justify-center items-center flex-col">
+          <div onClick={() => {}} className="w-[250px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto">
             <img
               className="w-full h-auto"
               src={
@@ -83,24 +83,7 @@ const Home = () => {
               <p>Price: ETH</p>
             </div>
           </div>
-          <AnimatedButton text={'Wrap'}></AnimatedButton>
-
-          <div onClick={() => {}} className="w-[300px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto">
-            <img
-              className="w-full h-auto"
-              src={
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNfct6kNIf7oUYjxdGyoAb7JShRb5B1Y_HOQ&usqp=CAU'
-              }
-              alt=""
-            />
-            <div className="p-4">
-              <p className="text-center">Super NFT 1</p>
-              <h3 className="mb-1">Token ID: </h3>
-              <p className="mb-1">Owner: </p>
-              <p className="mb-1">Buyer: </p>
-              <p>Price: ETH</p>
-            </div>
-          </div>
+          <AnimatedButton text={'Start Stream'}></AnimatedButton>
         </div>
       </div>
 

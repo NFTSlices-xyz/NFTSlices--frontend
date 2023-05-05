@@ -1,5 +1,4 @@
 import { useAccount, useContractRead, useContractReads } from 'wagmi'
-
 import { useWagmiContract } from './useContract'
 
 export const useWagmi = () => {

@@ -26,7 +26,7 @@ export function NetworkSwitcher() {
       defaultValue={defaultValue}
       value={defaultValue}
     >
-      <SelectTrigger className="max-w-auto h-8 lt-sm:hidden">
+      <SelectTrigger className="max-w-auto h-8 lt-sm:hidden bg-white">
         <SelectValue>
           <span className="flex-center">
             {isLoading && (

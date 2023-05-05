@@ -1,0 +1,15 @@
+/* AnimatedButton.css */
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+.animated-bg {
+  background: linear-gradient(270deg, #04619f, #000000);
+  background-size: 200% 200%;
+  animation: gradientBackground 4s ease infinite;
+}
