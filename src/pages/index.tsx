@@ -35,7 +35,6 @@ const Home = () => {
     watch: true,
   })
 
-  console.log('data: ', dataSales)
   return (
     <>
       <Header

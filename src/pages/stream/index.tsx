@@ -2,7 +2,7 @@ import { shorten } from '@did-network/dapp-sdk'
 import { Button } from 'uno-ui/src/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'uno-ui/src/components/ui/card'
 import { useToast } from 'uno-ui/src/components/ui/use-toast'
-import { useAccount } from 'wagmi'
+import { useAccount, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 import { Header } from '@/components/layout/Header'
 import { NetworkSwitcher } from '@/components/SwitchNetworks'
@@ -11,10 +11,18 @@ import { useWagmi } from '@/hooks'
 import { useCopyToClipboard } from '@/hooks/useCopy'
 import { useAtom, useSetAtom } from 'jotai'
 import { NFTatom } from '@/store'
+import { useProvider } from 'wagmi'
+import { useSigner } from 'wagmi'
 import AnimatedButton from '@/components/AnimatedButton'
+import { Framework } from '@superfluid-finance/sdk-core'
+import { Signer } from 'ethers'
+import SwapperABI from '../../ABI/SuperNFTSwapper.json'
+import WrapperABI from '../../ABI/SuperNFTWrapper.json'
+import { parseUnits } from 'ethers/lib/utils.js'
 
 const Home = () => {
   const { address } = useAccount()
+  let sf
 
   const [show, setShow] = useState(false)
   const [selectedNFT] = useAtom(NFTatom)
@@ -23,16 +31,59 @@ const Home = () => {
     setShow(e)
   }
 
-  const [_, copy] = useCopyToClipboard()
-  const { toast } = useToast()
+  const provider = useProvider()
+  const { data: signer, isError, isLoading } = useSigner()
 
-  const copyHandler = useCallback(() => {
-    copy('pnpm dlx fisand')
+  // const frameworkInit = async () => {
+  // }
+  // frameworkInit()
 
-    toast({
-      title: 'Copied success!',
+  const approveTokens = async () => {
+    sf = await Framework.create({
+      chainId: 80001, //i.e. 137 for matic
+      provider: provider, // i.e. the provider being used
     })
-  }, [copy, toast])
+
+    const daix = await sf.loadSuperToken('0x96e94C57EB9C7ad8F6ba883065075E55Fcb2CDB6')
+    console.log('signer: ', signer)
+    let flowOp = daix.updateFlowOperatorPermissions({
+      flowOperator: '0xbE05DA04F0E80A34391693c2E7FC3799a721887C',
+      permissions: 7,
+      flowRateAllowance: '200000000000000000000',
+    })
+
+    await flowOp.exec(signer)
+  }
+
+  const {
+    data: dataFFT,
+    // isError,
+    // isLoading,
+  } = useContractRead({
+    address: '0xD92A4831afFAa362a2210Eb42812D348C73dA6BA',
+    abi: WrapperABI.abi,
+    functionName: 'FFTMappings',
+    args: [0],
+    watch: true,
+  })
+
+  const { config: configStartSwap, refetch: refetchDeposit } = usePrepareContractWrite({
+    address: '0xbE05DA04F0E80A34391693c2E7FC3799a721887C',
+    abi: SwapperABI.abi,
+    functionName: 'StartSwap',
+    args: [dataFFT, '1000000000000000', '0x1C9b7d1b145eEae982ecE0B2Ef23cD011B3f4774', parseUnits('500')],
+  })
+
+  const {
+    data: dataDeposit,
+    isLoading: isLoadingDeposit,
+    isSuccess: isSuccessDeposit,
+    write: writeStartStream,
+  } = useContractWrite(configStartSwap)
+
+  const startStream = async () => {
+    writeStartStream?.()
+  }
 
   return (
     <>
@@ -83,7 +134,8 @@ const Home = () => {
               <p>Price: ETH</p>
             </div>
           </div>
-          <AnimatedButton text={'Start Stream'}></AnimatedButton>
+          <AnimatedButton onClick={() => approveTokens()} text={'Approve Tokens'}></AnimatedButton>
+          <AnimatedButton onClick={() => startStream?.()} text={'Start Stream'}></AnimatedButton>
         </div>
       </div>
 
