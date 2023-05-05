@@ -2,7 +2,7 @@ import { shorten } from '@did-network/dapp-sdk'
 import { Button } from 'uno-ui/src/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'uno-ui/src/components/ui/card'
 import { useToast } from 'uno-ui/src/components/ui/use-toast'
-import { useAccount, useContract, useContractRead, useContractReads } from 'wagmi'
+import { useAccount, useContract, useContractRead, useContractReads, useSigner } from 'wagmi'
 import WagmiABI from '../hooks/abi/Wagmi.json'
 import { Header } from '@/components/layout/Header'
 import { NetworkSwitcher } from '@/components/SwitchNetworks'
@@ -14,20 +14,34 @@ import { useNavigate } from 'react-router'
 import nft1 from '@/assets/1.png'
 import nft2 from '@/assets/2.png'
 import nft3 from '@/assets/3.png'
-
+import sliceNFTABI from '../ABI/SliceNFT.json'
+import salesABI from '../ABI/NFTMarketplace.json'
+import { ethers } from 'ethers'
 const Home = () => {
+  let sales: any = []
+  const [nfts, setNfts] = useState()
+  const { data: signer, isError, isLoading } = useSigner()
+  const salesContractAddress = '0x5A48adf86B30119b54f8e7d6e4e5dEB6C15c1437'
   const { address } = useAccount()
+
   const navigate = useNavigate()
   const [show, setShow] = useState(false)
   const [selectedNFT, setSelectedNFT] = useAtom(NFTatom)
+  console.log(signer)
 
   const toggleModal = (e: boolean) => {
     setShow(e)
   }
-
+  const fetchNFTs = async () => {
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, signer)
+    console.log(data)
+  }
+  useEffect(() => {
+    fetchNFTs()
+  }, [])
   const [_, copy] = useCopyToClipboard()
   const { toast } = useToast()
-  Item()
+
   const copyHandler = useCallback(() => {
     copy('pnpm dlx fisand')
 
@@ -80,7 +94,7 @@ const Home = () => {
             <img className="w-full h-auto" src={nft2} alt="" />
             <div className="p-4">
               <p className="text-center">NFT 1</p>
-              <h3 className="mb-1">Token ID: </h3>
+              <h3 className="mb-1">Token ID: 0</h3>
               <p className="mb-1">Owner: </p>
               <p className="mb-1">Buyer: </p>
               <p>Price: ETH</p>
@@ -96,7 +110,7 @@ const Home = () => {
             <img className="w-full h-auto" src={nft3} alt="" />
             <div className="p-4">
               <p className="text-center">NFT 2</p>
-              <h3 className="mb-1">Token ID: </h3>
+              <h3 className="mb-1">Token ID: 1</h3>
               <p className="mb-1">Owner: </p>
               <p className="mb-1">Buyer: </p>
               <p>Price: ETH</p>
@@ -112,7 +126,7 @@ const Home = () => {
             <img className="w-full h-auto" src={nft1} alt="" />
             <div className="p-4">
               <p className="text-center">NFT 3</p>
-              <h3 className="mb-1">Token ID: </h3>
+              <h3 className="mb-1">Token ID: 2</h3>
               <p className="mb-1">Owner: </p>
               <p className="mb-1">Buyer: </p>
               <p>Price: ETH</p>
@@ -127,12 +141,3 @@ const Home = () => {
 }
 
 export default Home
-
-async function Item() {
-  const contract = useContract({
-    address: '0xecb504d39723b0be0e3a9aa33d646642d1051ee1',
-    abi: WagmiABI,
-  })
-
-  console.log(contract)
-}
