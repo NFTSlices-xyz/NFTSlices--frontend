@@ -30,6 +30,13 @@ const Home = () => {
   const toggleModal = (e: boolean) => {
     setShow(e)
   }
+  function truncateString(str: string) {
+    if (str.length > 10) {
+      return str.slice(0, 10) + '...'
+    } else {
+      return str
+    }
+  }
 
   const provider = useProvider()
   const { data: signer, isError, isLoading } = useSigner()
@@ -122,17 +129,15 @@ const Home = () => {
           <div onClick={() => {}} className="w-[250px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto">
             <img
               className="w-full h-auto"
-              src={
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNfct6kNIf7oUYjxdGyoAb7JShRb5B1Y_HOQ&usqp=CAU'
-              }
+              src={'https://bafkreidx4g6tyevq5x6vxwvsqh33w2cf7mluvkxeh53troghhufqc2ww7m.ipfs.nftstorage.link/'}
               alt=""
             />
             <div className="p-4">
-              <p className="text-center">NFT 1</p>
-              <h3 className="mb-1">Token ID: </h3>
-              <p className="mb-1">Owner: </p>
-              <p className="mb-1">Buyer: </p>
-              <p>Price: ETH</p>
+              <p className="text-center">{`NFT 0`}</p>
+              <h3 className="mb-1">{`Token ID: 1`}</h3>
+              <p className="mb-1">{`Owner: 0x332dE499...`} </p>
+              <p className="mb-1">{`Buyer: 0x0c49FFE6...`} </p>
+              <p>{`Price: 500.0`} USDC</p>
             </div>
           </div>
           <div className="flex gap-8">
