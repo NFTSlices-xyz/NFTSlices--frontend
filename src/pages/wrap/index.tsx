@@ -23,6 +23,7 @@ import AnimatedButton from '@/components/AnimatedButton'
 import { Signer, ethers } from 'ethers'
 import wrapperABI from '../../ABI/SuperNFTWrapper.json'
 import nftABI from '../../ABI/SliceNFT.json'
+import { NFTCONTRACT, NFTWRAPPER, SUPERNFTSWAPPER, USDCTOKEN } from '@/constants'
 const Home = () => {
   let sf
   function truncateString(str: string) {
@@ -34,7 +35,7 @@ const Home = () => {
   }
   const { data: signer, isError, isLoading } = useSigner()
   const provider = useProvider()
-  const wrapperContractAddress = '0xD92A4831afFAa362a2210Eb42812D348C73dA6BA'
+  const wrapperContractAddress = NFTWRAPPER
   const wrapperContract = useContract({
     address: wrapperContractAddress,
     abi: wrapperABI.abi,
@@ -54,7 +55,7 @@ const Home = () => {
     // isError,
     // isLoading,
   } = useContractRead({
-    address: '0xD92A4831afFAa362a2210Eb42812D348C73dA6BA',
+    address: NFTWRAPPER,
     abi: wrapperABI.abi,
     functionName: 'FFTMappings',
     args: [0],
@@ -69,10 +70,10 @@ const Home = () => {
     })
 
     console.log('supertkn: ', dataFFT)
-    const daix = await sf.loadSuperToken('0x3680CAcBff632Cd6466AEfded81449F770ebdF50')
+    const daix = await sf.loadSuperToken(USDCTOKEN)
     console.log('signer: ', signer)
     let flowOp = daix.updateFlowOperatorPermissions({
-      flowOperator: '0xbE05DA04F0E80A34391693c2E7FC3799a721887C',
+      flowOperator: SUPERNFTSWAPPER,
       permissions: 7,
       flowRateAllowance: '200000000000000000000',
     })
@@ -82,7 +83,7 @@ const Home = () => {
   }
 
   const { config: configWrap } = usePrepareContractWrite({
-    address: '0xD92A4831afFAa362a2210Eb42812D348C73dA6BA',
+    address: NFTWRAPPER,
     abi: wrapperABI.abi,
     functionName: 'wrapNFT',
     args: [0, 'https://bafkreidx4g6tyevq5x6vxwvsqh33w2cf7mluvkxeh53troghhufqc2ww7m.ipfs.nftstorage.link/'],
@@ -96,10 +97,10 @@ const Home = () => {
   } = useContractWrite(configWrap)
 
   const { config: configApprove } = usePrepareContractWrite({
-    address: '0xF4F1Ff07d162385caE638DB528A6B6C35C3d700D',
+    address: NFTCONTRACT,
     abi: nftABI.abi,
     functionName: 'approve',
-    args: ['0xbE05DA04F0E80A34391693c2E7FC3799a721887C', 0],
+    args: [NFTWRAPPER, 0],
   })
 
   const { write: writeApprove } = useContractWrite(configApprove)

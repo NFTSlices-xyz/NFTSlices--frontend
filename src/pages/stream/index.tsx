@@ -19,6 +19,7 @@ import { Signer } from 'ethers'
 import SwapperABI from '../../ABI/SuperNFTSwapper.json'
 import WrapperABI from '../../ABI/SuperNFTWrapper.json'
 import { parseUnits } from 'ethers/lib/utils.js'
+import { NFTWRAPPER, SUPERNFTSWAPPER, USDCTOKEN } from '@/constants'
 
 const Home = () => {
   const { address } = useAccount()
@@ -44,10 +45,10 @@ const Home = () => {
       provider: provider, // i.e. the provider being used
     })
 
-    const daix = await sf.loadSuperToken('0x96e94C57EB9C7ad8F6ba883065075E55Fcb2CDB6')
+    const daix = await sf.loadSuperToken(USDCTOKEN)
     console.log('signer: ', signer)
     let flowOp = daix.updateFlowOperatorPermissions({
-      flowOperator: '0xbE05DA04F0E80A34391693c2E7FC3799a721887C',
+      flowOperator: SUPERNFTSWAPPER,
       permissions: 7,
       flowRateAllowance: '200000000000000000000',
     })
@@ -61,7 +62,7 @@ const Home = () => {
     // isError,
     // isLoading,
   } = useContractRead({
-    address: '0xD92A4831afFAa362a2210Eb42812D348C73dA6BA',
+    address: NFTWRAPPER,
     abi: WrapperABI.abi,
     functionName: 'FFTMappings',
     args: [0],
@@ -69,10 +70,10 @@ const Home = () => {
   })
 
   const { config: configStartSwap, refetch: refetchDeposit } = usePrepareContractWrite({
-    address: '0xbE05DA04F0E80A34391693c2E7FC3799a721887C',
+    address: SUPERNFTSWAPPER,
     abi: SwapperABI.abi,
     functionName: 'StartSwap',
-    args: [dataFFT, '1000000000000000', '0x332dE499eF93F6dc3674896aA4Ee934067917257', parseUnits('500')],
+    args: [dataFFT, '1000000000000000', dataFFT, parseUnits('500')],
   })
 
   const {

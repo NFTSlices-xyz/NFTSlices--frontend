@@ -17,6 +17,7 @@ import nft3 from '@/assets/3.png'
 
 import salesABI from '../ABI/NFTMarketplace.json'
 import { ethers } from 'ethers'
+import { NFTCONTRACT } from '@/constants'
 
 const Home = () => {
   const { address } = useAccount()
@@ -25,8 +26,8 @@ const Home = () => {
   let sales: any = []
   const [nfts, setNfts] = useState<any[]>()
   const { data: signer, isError, isLoading } = useSigner()
-  const salesContractAddress = '0x5A48adf86B30119b54f8e7d6e4e5dEB6C15c1437'
-  const salesContract = useContract({ address: salesContractAddress, abi: salesABI.abi, signerOrProvider: signer })
+  const marketPlaceContract = NFTCONTRACT
+  const salesContract = useContract({ address: marketPlaceContract, abi: salesABI.abi, signerOrProvider: signer })
   const [selectedNFT, setSelectedNFT] = useAtom(NFTatom)
   const toggleModal = (e: boolean) => {
     setShow(e)
