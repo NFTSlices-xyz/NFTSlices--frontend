@@ -99,7 +99,9 @@ const Home = () => {
                       tokenId: nftItem[3],
                     })
                     console.log(selectedNFT)
-                    navigate('wrap')
+                    if (selectedNFT) {
+                      navigate('wrap')
+                    }
                   }}
                   className="w-[300px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto"
                 >
