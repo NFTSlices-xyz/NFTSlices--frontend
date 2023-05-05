@@ -76,11 +76,13 @@ const Home = () => {
     watch: true,
   })
 
+  console.log('data: ', dataFFT)
+
   const { config: configStartSwap, refetch: refetchDeposit } = usePrepareContractWrite({
     address: SUPERNFTSWAPPER,
     abi: SwapperABI.abi,
     functionName: 'StartSwap',
-    args: [dataFFT, '1000000000000000', dataFFT, parseUnits('500')],
+    args: [dataFFT, '1000000000000000', '0x332dE499eF93F6dc3674896aA4Ee934067917257', parseUnits('500')],
   })
 
   const {

@@ -65,13 +65,14 @@ const Home = () => {
 
   //@ts-ignore
   const approveTokens = async (dataFFT) => {
+    console.log('tokkens being approved: ', dataFFT)
     sf = await Framework.create({
       chainId: 80001, //i.e. 137 for matic
       provider: provider, // i.e. the provider being used
     })
 
     console.log('supertkn: ', dataFFT)
-    const daix = await sf.loadSuperToken(USDCTOKEN)
+    const daix = await sf.loadSuperToken(dataFFT)
     console.log('signer: ', signer)
     let flowOp = daix.updateFlowOperatorPermissions({
       flowOperator: SUPERNFTSWAPPER,
