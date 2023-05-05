@@ -2,7 +2,15 @@ import { shorten } from '@did-network/dapp-sdk'
 import { Button } from 'uno-ui/src/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'uno-ui/src/components/ui/card'
 import { useToast } from 'uno-ui/src/components/ui/use-toast'
-import { useAccount, useContract, useProvider, useSigner } from 'wagmi'
+import {
+  useAccount,
+  useContract,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useProvider,
+  useSigner,
+} from 'wagmi'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { Header } from '@/components/layout/Header'
 import { NetworkSwitcher } from '@/components/SwitchNetworks'
@@ -14,6 +22,7 @@ import { NFTatom } from '@/store'
 import AnimatedButton from '@/components/AnimatedButton'
 import { Signer, ethers } from 'ethers'
 import wrapperABI from '../../ABI/SuperNFTWrapper.json'
+import nftABI from '../../ABI/SliceNFT.json'
 const Home = () => {
   let sf
   function truncateString(str: string) {
@@ -39,13 +48,28 @@ const Home = () => {
   const toggleModal = (e: boolean) => {
     setShow(e)
   }
-  const approveTokens = async () => {
+
+  const {
+    data: dataFFT,
+    // isError,
+    // isLoading,
+  } = useContractRead({
+    address: '0xD92A4831afFAa362a2210Eb42812D348C73dA6BA',
+    abi: wrapperABI.abi,
+    functionName: 'FFTMappings',
+    args: [0],
+    watch: true,
+  })
+
+  //@ts-ignore
+  const approveTokens = async (dataFFT) => {
     sf = await Framework.create({
       chainId: 80001, //i.e. 137 for matic
       provider: provider, // i.e. the provider being used
     })
 
-    const daix = await sf.loadSuperToken('0x96e94C57EB9C7ad8F6ba883065075E55Fcb2CDB6')
+    console.log('supertkn: ', dataFFT)
+    const daix = await sf.loadSuperToken('0x3680CAcBff632Cd6466AEfded81449F770ebdF50')
     console.log('signer: ', signer)
     let flowOp = daix.updateFlowOperatorPermissions({
       flowOperator: '0xbE05DA04F0E80A34391693c2E7FC3799a721887C',
@@ -53,8 +77,32 @@ const Home = () => {
       flowRateAllowance: '200000000000000000000',
     })
 
+    //@ts-ignore
     await flowOp.exec(signer)
   }
+
+  const { config: configWrap } = usePrepareContractWrite({
+    address: '0xD92A4831afFAa362a2210Eb42812D348C73dA6BA',
+    abi: wrapperABI.abi,
+    functionName: 'wrapNFT',
+    args: [0, 'https://bafkreidx4g6tyevq5x6vxwvsqh33w2cf7mluvkxeh53troghhufqc2ww7m.ipfs.nftstorage.link/'],
+  })
+
+  const {
+    data: dataWrap,
+    isLoading: isLoadingDeposit,
+    isSuccess: isSuccessDeposit,
+    write: writeWrap,
+  } = useContractWrite(configWrap)
+
+  const { config: configApprove } = usePrepareContractWrite({
+    address: '0xF4F1Ff07d162385caE638DB528A6B6C35C3d700D',
+    abi: nftABI.abi,
+    functionName: 'approve',
+    args: ['0xbE05DA04F0E80A34391693c2E7FC3799a721887C', 0],
+  })
+
+  const { write: writeApprove } = useContractWrite(configApprove)
 
   const [_, copy] = useCopyToClipboard()
   const { toast } = useToast()
@@ -118,8 +166,11 @@ const Home = () => {
             </div>
           )}
 
-          <AnimatedButton text={'Wrap'}></AnimatedButton>
-          <AnimatedButton text={'Approve'}></AnimatedButton>
+          <div className="flex flex-col gap-8">
+            <AnimatedButton onClick={() => writeApprove?.()} text={'Approve NFT'}></AnimatedButton>
+            <AnimatedButton onClick={() => writeWrap?.()} text={'Wrap'}></AnimatedButton>
+            <AnimatedButton onClick={() => approveTokens?.(dataFFT)} text={'Approve Stream'}></AnimatedButton>
+          </div>
 
           <div onClick={() => {}} className="w-[300px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto">
             <img

@@ -52,6 +52,7 @@ const Home = () => {
       flowRateAllowance: '200000000000000000000',
     })
 
+    //@ts-ignore
     await flowOp.exec(signer)
   }
 
@@ -71,7 +72,7 @@ const Home = () => {
     address: '0xbE05DA04F0E80A34391693c2E7FC3799a721887C',
     abi: SwapperABI.abi,
     functionName: 'StartSwap',
-    args: [dataFFT, '1000000000000000', '0x1C9b7d1b145eEae982ecE0B2Ef23cD011B3f4774', parseUnits('500')],
+    args: [dataFFT, '1000000000000000', '0x332dE499eF93F6dc3674896aA4Ee934067917257', parseUnits('500')],
   })
 
   const {
@@ -134,8 +135,10 @@ const Home = () => {
               <p>Price: ETH</p>
             </div>
           </div>
-          <AnimatedButton onClick={() => approveTokens()} text={'Approve Tokens'}></AnimatedButton>
-          <AnimatedButton onClick={() => startStream?.()} text={'Start Stream'}></AnimatedButton>
+          <div className="flex gap-8">
+            <AnimatedButton onClick={() => approveTokens()} text={'Approve Tokens'}></AnimatedButton>
+            <AnimatedButton onClick={() => startStream?.()} text={'Start Stream'}></AnimatedButton>
+          </div>
         </div>
       </div>
 
