@@ -79,6 +79,7 @@ const Home = () => {
     })
     // @ts-ignore
     await flowOp.exec(signer)
+    setShade(shades!)
   }
 
   const { config: configWrap } = usePrepareContractWrite({
