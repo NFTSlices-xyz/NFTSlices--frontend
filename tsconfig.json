@@ -8,16 +8,14 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": [
-      "unplugin-icons/types/react"
-    ],
+    "types": ["unplugin-icons/types/react"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
