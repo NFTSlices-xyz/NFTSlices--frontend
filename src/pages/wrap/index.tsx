@@ -53,7 +53,7 @@ const Home = () => {
       permissions: 7,
       flowRateAllowance: '200000000000000000000',
     })
-
+    // @ts-ignore
     await flowOp.exec(signer)
   }
 
