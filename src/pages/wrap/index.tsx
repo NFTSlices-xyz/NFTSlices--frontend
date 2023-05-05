@@ -153,6 +153,7 @@ const Home = () => {
         <div className="mt-5 max-w-6xl m-auto px-4 flex gap-8 flex-wrap justify-center items-center">
           {selectedNFT && (
             <div
+              style={{ backgroundColor: 'white' }}
               className={`${
                 !shades ? 'bg-gray-500 opacity-50' : ''
               } w-[300px]  rounded-lg shadow-md overflow-hidden max-w-m mx-auto`}
@@ -180,6 +181,7 @@ const Home = () => {
           </div>
 
           <div
+            style={{ backgroundColor: 'white' }}
             className={`${
               shades ? 'bg-gray-500 opacity-50' : ''
             } w-[300px]  rounded-lg shadow-md overflow-hidden max-w-m mx-auto`}

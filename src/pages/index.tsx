@@ -104,7 +104,8 @@ const Home = () => {
                       navigate('wrap')
                     }
                   }}
-                  className="w-[300px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto"
+                  style={{ backgroundColor: 'white' }}
+                  className="w-[300px] rounded-lg shadow-md overflow-hidden max-w-m mx-auto"
                 >
                   <img className="w-full h-auto" src={images[index]} alt="" />
                   <div className="p-4">
