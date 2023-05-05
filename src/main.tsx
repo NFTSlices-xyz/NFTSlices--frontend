@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { arbitrum, arbitrumGoerli, bsc, bscTestnet, goerli, mainnet, polygon } from 'wagmi/chains'
+import { arbitrum, arbitrumGoerli, bsc, bscTestnet, goerli, mainnet, polygon, polygonMumbai } from 'wagmi/chains'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
@@ -18,7 +18,7 @@ import 'uno.css'
 console.table(import.meta.env)
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [arbitrum, arbitrumGoerli, bsc, bscTestnet, mainnet, polygon, goerli],
+  [polygonMumbai],
   [
     // publicProvider(),
     jsonRpcProvider({
