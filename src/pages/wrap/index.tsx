@@ -33,6 +33,7 @@ const Home = () => {
       return str
     }
   }
+  const [shades, setShade] = useState<boolean>(true)
   const { data: signer, isError, isLoading } = useSigner()
   const provider = useProvider()
   const wrapperContractAddress = NFTWRAPPER
@@ -43,7 +44,7 @@ const Home = () => {
   })
   const { address } = useAccount()
 
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(true)
   const [selectedNFT] = useAtom(NFTatom)
 
   const toggleModal = (e: boolean) => {
@@ -77,9 +78,9 @@ const Home = () => {
       permissions: 7,
       flowRateAllowance: '200000000000000000000',
     })
-
-    //@ts-ignore
+    // @ts-ignore
     await flowOp.exec(signer)
+    setShade(shades!)
   }
 
   const { config: configWrap } = usePrepareContractWrite({
@@ -150,7 +151,11 @@ const Home = () => {
 
         <div className="mt-5 max-w-6xl m-auto px-4 flex gap-8 flex-wrap justify-center items-center">
           {selectedNFT && (
-            <div className="w-[300px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto">
+            <div
+              className={`${
+                !shades ? 'bg-gray-500 opacity-50' : ''
+              } w-[300px]  rounded-lg shadow-md overflow-hidden max-w-m mx-auto`}
+            >
               <img
                 className="w-full h-auto"
                 src={'https://bafkreidx4g6tyevq5x6vxwvsqh33w2cf7mluvkxeh53troghhufqc2ww7m.ipfs.nftstorage.link/'}
@@ -173,7 +178,11 @@ const Home = () => {
             <AnimatedButton onClick={() => approveTokens?.(dataFFT)} text={'Approve Stream'}></AnimatedButton>
           </div>
 
-          <div onClick={() => {}} className="w-[300px] bg-white rounded-lg shadow-md overflow-hidden max-w-m mx-auto">
+          <div
+            className={`${
+              shades ? 'bg-gray-500 opacity-50' : ''
+            } w-[300px]  rounded-lg shadow-md overflow-hidden max-w-m mx-auto`}
+          >
             <img
               className="w-full h-auto"
               src={'https://bafkreidx4g6tyevq5x6vxwvsqh33w2cf7mluvkxeh53troghhufqc2ww7m.ipfs.nftstorage.link/'}
@@ -181,7 +190,7 @@ const Home = () => {
             />
 
             <div className="p-4">
-              <p className="text-center">{`NFT ${selectedNFT.tokenId + 1}`}</p>
+              <p className="text-center">{`Super NFT ${selectedNFT.tokenId + 1}`}</p>
               <h3 className="mb-1">{`Token ID: ${selectedNFT.tokenId}`}</h3>
               <p className="mb-1">{`Owner: ${truncateString(selectedNFT.owner)}`} </p>
               <p className="mb-1">{`Buyer: ${truncateString(selectedNFT.buyer)}`} </p>
